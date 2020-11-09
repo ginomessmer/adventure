@@ -24,6 +24,7 @@ namespace Adventure.Server
             // Listen
             Console.WriteLine("LISTEN");
             socket.Listen(int.MaxValue);
+            Console.WriteLine("Listening on {0}...", endpoint);
 
             // Accept
             Console.WriteLine("ACCEPT");

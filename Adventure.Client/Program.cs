@@ -17,9 +17,11 @@ namespace Adventure.Client
             var endpoint = new IPEndPoint(entry.AddressList.First(), 14500);
             var socket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
+
             // Connect
             Console.WriteLine("CONNECT");
             await socket.ConnectAsync(endpoint);
+            Console.WriteLine("Connected to {0}", endpoint);
 
             // Send
             Console.WriteLine("SEND");
