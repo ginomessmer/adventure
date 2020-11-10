@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adventure.Core.Networking
+﻿namespace Adventure.Core.Networking.Abstractions
 {
     public static class SocketDefaults
     {

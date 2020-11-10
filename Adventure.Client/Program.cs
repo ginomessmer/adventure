@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Adventure.Core.Networking;
+using Adventure.Core.Networking.Abstractions;
 
 namespace Adventure.Client
 {

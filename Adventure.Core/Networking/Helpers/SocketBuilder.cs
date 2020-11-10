@@ -3,7 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Adventure.Core.Networking
+namespace Adventure.Core.Networking.Helpers
 {
     public class SocketBuilder
     {
