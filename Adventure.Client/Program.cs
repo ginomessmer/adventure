@@ -15,18 +15,13 @@ namespace Adventure.Client
         {
             // Create socket
             Console.WriteLine("Connecting to socket...");
-            var builder = new SocketBuilder()
-                .WithHostEntry("127.0.0.1")
-                .WithPort(SocketDefaults.Port);
-
-            var socket = builder.Build();
+            SocketClient client = new SimpleSocketClient();
 
             try
             {
                 // Connect
-                Console.WriteLine("CONNECT");
-                await socket.ConnectAsync(builder.Endpoint);
-                Console.WriteLine("Connected to {0}", builder.Endpoint);
+                Console.WriteLine("Start client");
+                client.Start();
             }
             catch (Exception ex)
             {
@@ -35,22 +30,8 @@ namespace Adventure.Client
 
             try
             {
-                // Send
-                Console.WriteLine("SEND");
-
-                var payload = "Hello world";
-                var payloadBuffer = Encoding.ASCII.GetBytes(payload);
-                var payloadSize = payloadBuffer.Length;
-
-                var header = $"{SocketDefaults.LengthHeaderName}{payloadSize}";
-                var headerBuffer = new byte[SocketDefaults.HeaderSize]; // Fixed header size
-                var headerSize = Encoding.ASCII.GetBytes(header, headerBuffer);
-
-                // Send over socket
-                var message = new List<byte>();
-                message.AddRange(headerBuffer);
-                message.AddRange(payloadBuffer);
-                socket.Send(message.ToArray());
+                Console.WriteLine("Send message");
+                client.SendMessage("Hello world");
             }
             catch (Exception ex)
             {
@@ -59,7 +40,7 @@ namespace Adventure.Client
 
             // Receive
             var receiveBuffer = new byte[1024];
-            socket.Receive(receiveBuffer);
+            //socket.Receive(receiveBuffer);
             
             Console.WriteLine("Reply: {0}", Encoding.ASCII.GetString(receiveBuffer));
 

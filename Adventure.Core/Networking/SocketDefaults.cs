@@ -24,6 +24,11 @@ namespace Adventure.Core.Networking
         /// <summary>
         /// The default header key name for the message's length.
         /// </summary>
-        public const string LengthHeaderName = "l:";
+        public const string LengthHeaderName = "L";
+
+        /// <summary>
+        /// The default loopback address.
+        /// </summary>
+        public const string LoopbackAddress = "127.0.0.1";
     }
 }
