@@ -41,33 +41,33 @@ namespace Adventure.Server
                     try
                     {
                         receiveSocket.Receive(buffer);
-                        data += Encoding.ASCII.GetString(buffer);
-
-                        // Get header length value
-                        var headerIndex = data.IndexOf(SocketDefaults.LengthHeaderName, StringComparison.Ordinal);
-                        if (headerIndex > -1)
-                        {
-                            var header = data.Substring(headerIndex, SocketDefaults.HeaderSize);
-
-                            // Split or regex
-                            var headerKeyValue = header.Split(':');
-                            var length = Convert.ToInt32(headerKeyValue[1]);
-
-                            Console.WriteLine("Received new message");
-                            Console.WriteLine("- Length: {0}", length);
-
-                            var payload = data.Substring(headerIndex + SocketDefaults.HeaderSize, length);
-
-                            Console.WriteLine("- Payload: {0}", payload);
-
-                            receiveSocket.Send(Encoding.ASCII.GetBytes("Great success"));
-                        }
                     }
                     catch (SocketException ex)
                     {
-                        Console.WriteLine("A socket exception ({0}) occurred: {1}", ex.SocketErrorCode, ex);
-                        receiveSocket.Close();
-                        receiveSocket.Dispose();
+                        Console.WriteLine("Socket exception: {0}", ex);
+                        break;
+                    }
+
+                    data += Encoding.ASCII.GetString(buffer);
+
+                    // Get header length value
+                    var headerIndex = data.IndexOf(SocketDefaults.LengthHeaderName, StringComparison.Ordinal);
+                    if (headerIndex > -1)
+                    {
+                        var header = data.Substring(headerIndex, SocketDefaults.HeaderSize);
+
+                        // Split or regex
+                        var headerKeyValue = header.Split(':');
+                        var length = Convert.ToInt32(headerKeyValue[1]);
+
+                        Console.WriteLine("Received new message");
+                        Console.WriteLine("- Length: {0}", length);
+
+                        var payload = data.Substring(headerIndex + SocketDefaults.HeaderSize, length);
+
+                        Console.WriteLine("- Payload: {0}", payload);
+
+                        receiveSocket.Send(Encoding.ASCII.GetBytes("Great success"));
                     }
                 }
             }
