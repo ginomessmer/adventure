@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Adventure.Core.Networking;
 
 namespace Adventure.Server
 {
@@ -30,24 +31,45 @@ namespace Adventure.Server
             Console.WriteLine("ACCEPT");
             var receiveSocket = socket.Accept();
 
-            var buffer = new byte[1024];
+            var buffer = new byte[SocketDefaults.MessageSize];
             var data = "";
 
             // Receive
             Console.WriteLine("RECEIVE...");
             while (true)
             {
-                receiveSocket.Receive(buffer);
-                data += Encoding.ASCII.GetString(buffer);
-
-                if (data.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
+                try
                 {
-                    receiveSocket.Send(Encoding.ASCII.GetBytes("Great success"));
-                    break;
+                    receiveSocket.Receive(buffer);
+                    data += Encoding.ASCII.GetString(buffer);
+
+                    // Get header length value
+                    var headerIndex = data.IndexOf(SocketDefaults.LengthHeaderName, StringComparison.Ordinal);
+                    if (headerIndex > -1)
+                    {
+                        var header = data.Substring(headerIndex, SocketDefaults.HeaderSize);
+
+                        // Split or regex
+                        var headerKeyValue = header.Split(':');
+                        var length = Convert.ToInt32(headerKeyValue[1]);
+
+                        Console.WriteLine("Received new message");
+                        Console.WriteLine("- Length: {0}", length);
+
+                        var payload = data.Substring(headerIndex + SocketDefaults.HeaderSize, length);
+
+                        Console.WriteLine("- Payload: {0}", payload);
+
+                        receiveSocket.Send(Encoding.ASCII.GetBytes("Great success"));
+                    }
+                }
+                catch (SocketException ex)
+                {
+                    Console.WriteLine("A socket exception ({0}) occurred: {1}", ex.SocketErrorCode, ex);
+                    receiveSocket.Close();
+                    receiveSocket.Dispose();
                 }
             }
-
-            Console.WriteLine("Data received:\n{0}", data);
 
             Console.WriteLine("Press any key to exit...");
             Console.Read();

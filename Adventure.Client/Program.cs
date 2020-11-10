@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Adventure.Core.Networking;
 
 namespace Adventure.Client
 {
@@ -17,27 +19,60 @@ namespace Adventure.Client
             var endpoint = new IPEndPoint(entry.AddressList.First(), 14500);
             var socket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
+            try
+            {
+                // Connect
+                Console.WriteLine("CONNECT");
+                await socket.ConnectAsync(endpoint);
+                Console.WriteLine("Connected to {0}", endpoint);
+            }
+            catch (Exception ex)
+            {
+                HandleExceptionAndShutdown(ex, "Error while connecting to the server");
+            }
 
-            // Connect
-            Console.WriteLine("CONNECT");
-            await socket.ConnectAsync(endpoint);
-            Console.WriteLine("Connected to {0}", endpoint);
+            try
+            {
+                // Send
+                Console.WriteLine("SEND");
 
-            // Send
-            Console.WriteLine("SEND");
-            socket.Send(Encoding.ASCII.GetBytes("Hello world <EOF>"));
+                var payloadBuffer = Encoding.ASCII.GetBytes("Hello world");
+                var payloadSize = payloadBuffer.Length;
+
+                var header = $"{SocketDefaults.LengthHeaderName}{payloadSize}";
+                var headerBuffer = new byte[SocketDefaults.HeaderSize];
+                Encoding.ASCII.GetBytes(header, headerBuffer);
+
+                // Send header
+                var message = new List<byte>();
+                message.AddRange(headerBuffer);
+                message.AddRange(payloadBuffer);
+                socket.Send(message.ToArray());
+            }
+            catch (Exception ex)
+            {
+                HandleExceptionAndShutdown(ex, "Error while sending the message");
+            }
 
             // Receive
             var buffer = new byte[1024];
             socket.Receive(buffer);
             
             Console.WriteLine("Reply: {0}", Encoding.ASCII.GetString(buffer));
-            socket.Shutdown(SocketShutdown.Both);
-            socket.Close();
-            socket.Dispose();
+            //socket.Shutdown(SocketShutdown.Both);
+            //socket.Close();
+            //socket.Dispose();
 
             Console.WriteLine("Press any key to exit...");
             Console.Read();
+        }
+
+        public static void HandleExceptionAndShutdown(Exception ex, string message = "An exception occurred")
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("{0}: {1}", message, ex);
+            Console.ReadLine();
+            Environment.Exit(1);
         }
     }
 }
