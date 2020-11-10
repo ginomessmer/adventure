@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Adventure.Core.Networking.Abstractions;
+using Adventure.Core.Networking.Helpers;
+using System;
 using System.Net.Sockets;
 using System.Text;
-using Adventure.Core.Networking.Abstractions;
-using Adventure.Core.Networking.Helpers;
 
-namespace Adventure.Core.Networking
+namespace Adventure.Core.Networking.Providers
 {
     public sealed class SimpleSocketServer : SocketServer
     {

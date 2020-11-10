@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
+﻿using Adventure.Core.Networking.Abstractions;
+using Adventure.Core.Networking.Providers;
+using System;
 using System.Text;
 using System.Threading.Tasks;
-using Adventure.Core.Networking;
-using Adventure.Core.Networking.Abstractions;
 
 namespace Adventure.Client
 {
@@ -42,7 +38,7 @@ namespace Adventure.Client
             // Receive
             var receiveBuffer = new byte[1024];
             //socket.Receive(receiveBuffer);
-            
+
             Console.WriteLine("Reply: {0}", Encoding.ASCII.GetString(receiveBuffer));
 
             Console.WriteLine("Press any key to exit...");
