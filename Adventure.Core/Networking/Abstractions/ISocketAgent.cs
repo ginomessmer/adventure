@@ -10,6 +10,6 @@ namespace Adventure.Core.Networking.Abstractions
 
         void SendMessage(string message);
 
-        event EventHandler<string> OnMessageReceived;
+        event EventHandler<MessageReceivedArgs> OnMessageReceived;
     }
 }

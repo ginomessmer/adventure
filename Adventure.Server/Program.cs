@@ -16,6 +16,11 @@ namespace Adventure.Server
             Console.WriteLine("Starting server");
 
             var server = new SimpleSocketServer();
+            server.OnMessageReceived += (sender, receivedArgs) =>
+            {
+                Console.WriteLine("Message received: {0}", receivedArgs.Message);
+            };
+
             server.Start();
         }
     }

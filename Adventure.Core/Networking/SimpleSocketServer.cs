@@ -51,14 +51,11 @@ namespace Adventure.Core.Networking
 
                         // Split or regex
                         var headerKeyValue = header.Split(':');
+
                         var length = Convert.ToInt32(headerKeyValue[1]);
+                        var message = _data.Substring(headerIndex + SocketDefaults.HeaderSize, length);
 
-                        Console.WriteLine("Received new message");
-                        Console.WriteLine("- Length: {0}", length);
-
-                        var payload = _data.Substring(headerIndex + SocketDefaults.HeaderSize, length);
-
-                        Console.WriteLine("- Payload: {0}", payload);
+                        OnMessageReceived?.Invoke(this, new MessageReceivedArgs(message));
 
                         receiveSocket.Send(Encoding.ASCII.GetBytes("Great success"));
                     }
@@ -78,6 +75,6 @@ namespace Adventure.Core.Networking
             throw new NotImplementedException();
         }
 
-        public override event EventHandler<string> OnMessageReceived;
+        public override event EventHandler<MessageReceivedArgs> OnMessageReceived;
     }
 }

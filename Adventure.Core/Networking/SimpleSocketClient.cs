@@ -53,7 +53,7 @@ namespace Adventure.Core.Networking
 
         public override void SendInitialMessage() => throw new NotImplementedException();
 
-        public override event EventHandler<string> OnMessageReceived;
+        public override event EventHandler<MessageReceivedArgs> OnMessageReceived;
 
         public override void Shutdown()
         {
