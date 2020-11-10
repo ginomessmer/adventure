@@ -36,14 +36,15 @@ namespace Adventure.Client
                 // Send
                 Console.WriteLine("SEND");
 
-                var payloadBuffer = Encoding.ASCII.GetBytes("Hello world");
+                var payload = "Hello world";
+                var payloadBuffer = Encoding.ASCII.GetBytes(payload);
                 var payloadSize = payloadBuffer.Length;
 
                 var header = $"{SocketDefaults.LengthHeaderName}{payloadSize}";
-                var headerBuffer = new byte[SocketDefaults.HeaderSize];
-                Encoding.ASCII.GetBytes(header, headerBuffer);
+                var headerBuffer = new byte[SocketDefaults.HeaderSize]; // Fixed header size
+                var headerSize = Encoding.ASCII.GetBytes(header, headerBuffer);
 
-                // Send header
+                // Send over socket
                 var message = new List<byte>();
                 message.AddRange(headerBuffer);
                 message.AddRange(payloadBuffer);
@@ -55,13 +56,10 @@ namespace Adventure.Client
             }
 
             // Receive
-            var buffer = new byte[1024];
-            socket.Receive(buffer);
+            var receiveBuffer = new byte[1024];
+            socket.Receive(receiveBuffer);
             
-            Console.WriteLine("Reply: {0}", Encoding.ASCII.GetString(buffer));
-            //socket.Shutdown(SocketShutdown.Both);
-            //socket.Close();
-            //socket.Dispose();
+            Console.WriteLine("Reply: {0}", Encoding.ASCII.GetString(receiveBuffer));
 
             Console.WriteLine("Press any key to exit...");
             Console.Read();
