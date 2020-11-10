@@ -15,16 +15,18 @@ namespace Adventure.Client
         {
             // Create socket
             Console.WriteLine("Connecting to socket...");
-            var entry = await Dns.GetHostEntryAsync("127.0.0.1");
-            var endpoint = new IPEndPoint(entry.AddressList.First(), SocketDefaults.Port);
-            var socket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            var builder = new SocketBuilder()
+                .WithHostEntry("127.0.0.1")
+                .WithPort(SocketDefaults.Port);
+
+            var socket = builder.Build();
 
             try
             {
                 // Connect
                 Console.WriteLine("CONNECT");
-                await socket.ConnectAsync(endpoint);
-                Console.WriteLine("Connected to {0}", endpoint);
+                await socket.ConnectAsync(builder.Endpoint);
+                Console.WriteLine("Connected to {0}", builder.Endpoint);
             }
             catch (Exception ex)
             {
