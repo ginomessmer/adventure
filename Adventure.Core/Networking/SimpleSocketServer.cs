@@ -23,7 +23,7 @@ namespace Adventure.Core.Networking
             _socket.Listen(int.MaxValue);
 
             _buffer = new byte[SocketDefaults.MessageSize];
-            _data = "";
+            _data = string.Empty;
 
             while (true)
             {
@@ -67,7 +67,9 @@ namespace Adventure.Core.Networking
 
         public override void Shutdown()
         {
-            throw new NotImplementedException();
+            _socket.Shutdown(SocketShutdown.Both);
+            _socket.Close();
+            _socket.Dispose();
         }
 
         public override void SendMessage(string message)

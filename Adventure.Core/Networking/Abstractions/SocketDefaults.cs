@@ -26,5 +26,10 @@
         /// The default loopback address.
         /// </summary>
         public const string LoopbackAddress = "127.0.0.1";
+
+        /// <summary>
+        /// The default handshake content.
+        /// </summary>
+        public const string HandshakeMessageContent = "HELLO_WORLD";
     }
 }

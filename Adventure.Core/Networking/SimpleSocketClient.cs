@@ -51,7 +51,7 @@ namespace Adventure.Core.Networking
             _socket.Send(payload.ToArray());
         }
 
-        public override void SendInitialMessage() => throw new NotImplementedException();
+        public override void SendInitialMessage() => SendMessage(SocketDefaults.HandshakeMessageContent);
 
         public override event EventHandler<MessageReceivedArgs> OnMessageReceived;
 
