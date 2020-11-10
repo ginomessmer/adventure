@@ -16,7 +16,7 @@ namespace Adventure.Client
             // Create socket
             Console.WriteLine("Connecting to socket...");
             var entry = await Dns.GetHostEntryAsync("127.0.0.1");
-            var endpoint = new IPEndPoint(entry.AddressList.First(), 14500);
+            var endpoint = new IPEndPoint(entry.AddressList.First(), SocketDefaults.Port);
             var socket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             try
