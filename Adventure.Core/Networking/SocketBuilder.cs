@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 
@@ -7,14 +8,30 @@ namespace Adventure.Core.Networking
     public class SocketBuilder
     {
         public IPAddress IpAddress { get; private set; }
+
         public int Port { get; private set; }
+
         public IPEndPoint Endpoint { get; private set; }
+
+        public SocketBuilder()
+        {
+        }
+
+        public SocketBuilder(IPAddress ipAddress, int port)
+        {
+            IpAddress = ipAddress;
+            Port = port;
+        }
 
         public SocketBuilder WithHostEntry(string host)
         {
             var entry = Dns.GetHostEntry(host);
-            IpAddress = entry.AddressList.First();
-            return this;
+            var address = entry.AddressList.FirstOrDefault();
+
+            if (address is null)
+                throw new Exception("No suitable host name was found");
+
+            return WithIpAddress(address);
         }
 
         public SocketBuilder WithIpAddress(IPAddress address)

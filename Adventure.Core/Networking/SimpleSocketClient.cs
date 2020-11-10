@@ -10,6 +10,9 @@ namespace Adventure.Core.Networking
     {
         private Socket _socket;
 
+        /// <summary>
+        /// Starts the client.
+        /// </summary>
         public override void Start()
         {
             var builder = new SocketBuilder()
@@ -20,6 +23,10 @@ namespace Adventure.Core.Networking
             _socket.Connect(builder.Endpoint);
         }
 
+        /// <summary>
+        /// Sends a message to the designated server.
+        /// </summary>
+        /// <param name="message"></param>
         public override void SendMessage(string message)
         {
             var messageBuffer = Encoding.ASCII.GetBytes(message);
