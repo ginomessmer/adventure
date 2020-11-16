@@ -10,7 +10,7 @@ namespace Adventure.Server
         public static void Main(string[] args)
         {
             // Create socket
-            Console.WriteLine("Starting server");
+            Console.WriteLine("Starting server...");
 
             var serverThread = new Thread(() =>
             {
