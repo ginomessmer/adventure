@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text.Json;
 using Adventure.Core.Networking.Abstractions;
 
 namespace Adventure.Core.Networking.Providers
@@ -17,6 +19,11 @@ namespace Adventure.Core.Networking.Providers
 
         public override void SendMessage(string message)
         {
+            var stream = new MemoryStream();
+            var writer = new Utf8JsonWriter(stream);
+
+            writer.WriteString("Hello", "world");
+
             throw new NotImplementedException();
         }
 
