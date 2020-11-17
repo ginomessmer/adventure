@@ -2,30 +2,21 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Adventure.Core.Networking.Helpers;
 
 namespace Adventure.Server
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            Console.WriteLine("Starting server...");
-
-            var server = new SimpleSocketServer();
-            server.OnMessageReceived += (sender, receivedArgs) =>
+        public static Task Main(string[] args) => new SocketServerBuilder<SimpleSocketServer>()
+            .WithHandlers(handlers =>
             {
-                Console.WriteLine("Message received from client {0}: {1}", receivedArgs.Connection.Id, receivedArgs.Message);
-            };
-
-            server.OnClientDisconnected += (sender, disconnectedArgs) =>
-            {
-                Console.WriteLine("Client {0} disconnected from server", disconnectedArgs.Connection.Id);
-            };
-
-            var serverTask = server.StartAsync();
-
-            Console.WriteLine("Server started ({0})", serverTask.Id);
-            Console.ReadLine();
-        }
+                handlers.Starting = () => Console.WriteLine("Server is starting...");
+                handlers.Started = () => Console.WriteLine("Server started"); 
+                handlers.MessageReceived = args => Console.WriteLine("Message received from client {0}: {1}", args.Connection.Id, args.Message);
+                handlers.ClientDisconnected = args => Console.WriteLine("Client {0} disconnected from server", args.Connection.Id);
+            })
+            .Build()
+            .RunAsync();
     }
 }
