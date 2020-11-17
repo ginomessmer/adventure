@@ -3,6 +3,7 @@ using Adventure.Core.Networking.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Adventure.Core.Networking.Providers
 {
@@ -14,6 +15,8 @@ namespace Adventure.Core.Networking.Providers
         private Socket _socket;
 
         private readonly ICollection<SocketConnection> _connections = new List<SocketConnection>();
+
+        public Task StartAsync() => Task.Run(Start);
 
         /// <summary>
         /// Starts the server and accepts new incoming requests. All new requests are added to a managed connections collection.
