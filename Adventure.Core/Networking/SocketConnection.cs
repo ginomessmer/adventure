@@ -51,6 +51,11 @@ namespace Adventure.Core.Networking
         /// </summary>
         public event EventHandler<SocketConnectionClientDisconnectedArgs> OnDisconnected;
 
+        /// <summary>
+        /// <inheritdoc cref="SocketConnection(Socket, SocketServer, string)"/>
+        /// </summary>
+        /// <param name="clientSocket"></param>
+        /// <param name="server"></param>
         public SocketConnection(Socket clientSocket, SocketServer server) : this(clientSocket, server, Guid.NewGuid().ToString())
         {
         }

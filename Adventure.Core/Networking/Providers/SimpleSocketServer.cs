@@ -2,6 +2,7 @@
 using Adventure.Core.Networking.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -15,7 +16,12 @@ namespace Adventure.Core.Networking.Providers
         private Socket _socket;
 
         private readonly ICollection<SocketConnection> _connections = new List<SocketConnection>();
+        public IReadOnlyCollection<SocketConnection> Connections => _connections.ToList();
 
+        /// <summary>
+        /// <inheritdoc cref="Start"/>. This method starts it in a dedicated task.
+        /// </summary>
+        /// <returns></returns>
         public Task StartAsync() => Task.Run(Start);
 
         /// <summary>
