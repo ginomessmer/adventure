@@ -54,6 +54,18 @@ namespace Adventure.Core.Networking.Helpers
         }
 
         /// <summary>
+        /// Alias of <seealso cref="WithHostEntry"/>.
+        /// <inheritdoc cref="WithHostEntry"/>
+        /// </summary>
+        public SocketBuilder WithEndpoint(string host) => WithHostEntry(host);
+
+        /// <summary>
+        /// Alias of <seealso cref="WithIpAddress"/>.
+        /// <inheritdoc cref="WithIpAddress"/>
+        /// </summary>
+        public SocketBuilder WithEndpoint(IPAddress address) => WithIpAddress(address);
+
+        /// <summary>
         /// Appends the dedicated port.
         /// </summary>
         /// <param name="port"></param>

@@ -8,44 +8,38 @@ namespace Adventure.Client
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            // Create socket
-            Console.WriteLine("Connecting to socket...");
+            Console.WriteLine("Connecting to server...");
             SocketClient client = new SimpleSocketClient();
+
+            client.OnConnected += (sender, eventArgs) => Console.WriteLine("Connected to server");
 
             try
             {
-                // Connect
-                Console.WriteLine("Start client");
                 client.Start();
             }
             catch (Exception ex)
             {
-                HandleExceptionAndShutdown(ex, "Error while connecting to the server");
+                HandleExceptionAndShutdownGracefully(ex, "Error while connecting to the server");
             }
 
             try
             {
-                Console.WriteLine("Send message");
+                Console.WriteLine("Send message...");
                 client.SendMessage("Hello world");
+                Console.WriteLine("Message sent");
             }
             catch (Exception ex)
             {
-                HandleExceptionAndShutdown(ex, "Error while sending the message");
+                HandleExceptionAndShutdownGracefully(ex, "Error while sending the message");
             }
-
-            // Receive
-            var receiveBuffer = new byte[1024];
-            //socket.Receive(receiveBuffer);
-
-            Console.WriteLine("Reply: {0}", Encoding.ASCII.GetString(receiveBuffer));
 
             Console.WriteLine("Press any key to exit...");
             Console.Read();
         }
 
-        public static void HandleExceptionAndShutdown(Exception ex, string message = "An exception occurred")
+        private static void HandleExceptionAndShutdownGracefully(Exception ex, string message = "An exception occurred")
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("{0}: {1}", message, ex);

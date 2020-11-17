@@ -7,6 +7,10 @@ namespace Adventure.Core.Networking.Providers
 {
     public sealed class JsonSocketClient : SocketClient
     {
+        public override event EventHandler<SocketConnectionMessageReceivedArgs> OnMessageReceived;
+
+        public override event EventHandler OnConnected;
+
         public override void Start()
         {
             throw new NotImplementedException();
@@ -26,8 +30,6 @@ namespace Adventure.Core.Networking.Providers
 
             throw new NotImplementedException();
         }
-
-        public override event EventHandler<SocketConnectionMessageReceivedArgs> OnMessageReceived;
         public override void SendInitialMessage()
         {
             throw new NotImplementedException();

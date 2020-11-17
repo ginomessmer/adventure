@@ -2,6 +2,8 @@
 using Adventure.Core.Networking.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -9,7 +11,56 @@ namespace Adventure.Core.Networking.Providers
 {
     public sealed class SimpleSocketClient : SocketClient
     {
+        #region Properties
+
+        /// <summary>
+        /// The remote server's IP address.
+        /// </summary>
+        public IPAddress ServerIPAddress { get; init; }
+
+        /// <summary>
+        /// The remote server's port.
+        /// </summary>
+        public int ServerPort { get; init; }
+
+        #endregion
+
+
+        #region Fields
+
+        /// <summary>
+        /// The internal network socket.
+        /// </summary>
         private Socket _socket;
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Fires as soon as the client connects to the server for the first time.
+        /// </summary>
+        public override event EventHandler OnConnected;
+
+        #endregion
+
+        #region Constructors
+
+        public SimpleSocketClient() : this(SocketDefaults.LoopbackAddress, SocketDefaults.Port)
+        {
+        }
+
+        public SimpleSocketClient(IPAddress serverIpAddress, int serverPort)
+        {
+            ServerIPAddress = serverIpAddress;
+            ServerPort = serverPort;
+        }
+
+        public SimpleSocketClient(string host, int serverPort) : this(Dns.GetHostEntry(host).AddressList.FirstOrDefault(), serverPort)
+        {
+        }
+
+        #endregion
 
         /// <summary>
         /// Starts the client.
@@ -17,11 +68,13 @@ namespace Adventure.Core.Networking.Providers
         public override void Start()
         {
             var builder = new SocketBuilder()
-                .WithHostEntry(SocketDefaults.LoopbackAddress)
+                .WithEndpoint(ServerIPAddress)
                 .WithPort(SocketDefaults.Port);
 
             _socket = builder.Build();
             _socket.Connect(builder.Endpoint);
+
+            OnConnected?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -54,6 +107,9 @@ namespace Adventure.Core.Networking.Providers
 
         public override event EventHandler<SocketConnectionMessageReceivedArgs> OnMessageReceived;
 
+        /// <summary>
+        /// Shuts down the network connection.
+        /// </summary>
         public override void Shutdown()
         {
             _socket.Shutdown(SocketShutdown.Both);
