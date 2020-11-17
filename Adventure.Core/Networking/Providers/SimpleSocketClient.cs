@@ -46,14 +46,24 @@ namespace Adventure.Core.Networking.Providers
 
         #region Constructors
 
-        public SimpleSocketClient() : this(SocketDefaults.LoopbackAddress, SocketDefaults.Port)
-        {
-        }
-
         public SimpleSocketClient(IPAddress serverIpAddress, int serverPort)
         {
+            if (ServerIPAddress is null or default(IPAddress))
+                throw new ArgumentNullException(nameof(serverIpAddress), "Remote endpoint cannot be left unspecified");
+
+            if (serverPort is default(int))
+                throw new ArgumentOutOfRangeException(nameof(serverPort), $"Port cannot be {serverPort}");
+
+
             ServerIPAddress = serverIpAddress;
             ServerPort = serverPort;
+        }
+
+        /// <summary>
+        /// Creates a new client with default options.
+        /// </summary>
+        public SimpleSocketClient() : this(SocketDefaults.LoopbackAddress, SocketDefaults.Port)
+        {
         }
 
         public SimpleSocketClient(string host, int serverPort) : this(Dns.GetHostEntry(host).AddressList.FirstOrDefault(), serverPort)
@@ -69,7 +79,7 @@ namespace Adventure.Core.Networking.Providers
         {
             var builder = new SocketBuilder()
                 .WithEndpoint(ServerIPAddress)
-                .WithPort(SocketDefaults.Port);
+                .WithPort(ServerPort);
 
             _socket = builder.Build();
             _socket.Connect(builder.Endpoint);
