@@ -1,5 +1,5 @@
-﻿using System;
-using Adventure.Core.Networking.Abstractions;
+﻿using Adventure.Core.Networking.Abstractions;
+using System;
 
 namespace Adventure.Core.Networking.Providers
 {

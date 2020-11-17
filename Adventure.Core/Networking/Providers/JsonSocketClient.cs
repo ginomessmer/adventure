@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Adventure.Core.Networking.Abstractions;
+using System;
 using System.IO;
 using System.Text.Json;
-using Adventure.Core.Networking.Abstractions;
 
 namespace Adventure.Core.Networking.Providers
 {

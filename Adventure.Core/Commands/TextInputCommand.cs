@@ -1,5 +1,5 @@
-﻿using System;
-using Adventure.Core.Commands.Abstractions;
+﻿using Adventure.Core.Commands.Abstractions;
+using System;
 
 namespace Adventure.Core.Commands
 {
