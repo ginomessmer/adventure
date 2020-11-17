@@ -1,6 +1,7 @@
 ﻿using Adventure.Core.Networking.Abstractions;
 using System;
 using System.IO;
+using System.Net;
 using System.Text.Json;
 
 namespace Adventure.Core.Networking.Providers
@@ -10,6 +11,11 @@ namespace Adventure.Core.Networking.Providers
         public override event EventHandler<SocketConnectionMessageReceivedArgs> OnMessageReceived;
 
         public override event EventHandler OnConnected;
+
+        // TODO
+        public override IPAddress ServerIPAddress { get; init; }
+        public override int ServerPort { get; init; }
+        public override EndPoint ServerEndPoint { get; }
 
         public override void Start()
         {

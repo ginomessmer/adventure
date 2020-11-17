@@ -13,7 +13,7 @@ namespace Adventure.Client
             Console.WriteLine("Connecting to server...");
             SocketClient client = new SimpleSocketClient();
 
-            client.OnConnected += (sender, eventArgs) => Console.WriteLine("Connected to server");
+            client.OnConnected += (sender, eventArgs) => Console.WriteLine("Connected to server {0}", client.ServerEndPoint);
 
             try
             {

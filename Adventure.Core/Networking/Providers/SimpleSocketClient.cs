@@ -12,16 +12,14 @@ namespace Adventure.Core.Networking.Providers
     public sealed class SimpleSocketClient : SocketClient
     {
         #region Properties
+        /// <inheritdoc cref="SocketClient.ServerIPAddress"/>
+        public override IPAddress ServerIPAddress { get; init; }
 
-        /// <summary>
-        /// The remote server's IP address.
-        /// </summary>
-        public IPAddress ServerIPAddress { get; init; }
+        /// <inheritdoc cref="SocketClient.ServerPort"/>
+        public override int ServerPort { get; init; }
 
-        /// <summary>
-        /// The remote server's port.
-        /// </summary>
-        public int ServerPort { get; init; }
+        /// <inheritdoc cref="SocketClient.ServerEndPoint"/>
+        public override EndPoint ServerEndPoint => _socket.RemoteEndPoint;
 
         #endregion
 
@@ -46,16 +44,17 @@ namespace Adventure.Core.Networking.Providers
 
         #region Constructors
 
-        public SimpleSocketClient(IPAddress serverIpAddress, int serverPort)
+        // TODO: Should extract constructors to base class since they are used across all implementations anyway
+        public SimpleSocketClient(IPAddress serverIPAddress, int serverPort)
         {
-            if (ServerIPAddress is null or default(IPAddress))
-                throw new ArgumentNullException(nameof(serverIpAddress), "Remote endpoint cannot be left unspecified");
+            if (serverIPAddress is null or default(IPAddress))
+                throw new ArgumentNullException(nameof(serverIPAddress), "Remote endpoint cannot be left unspecified");
 
-            if (serverPort is default(int))
+            if (serverPort is default(int) or >= IPEndPoint.MaxPort or < 1024)
                 throw new ArgumentOutOfRangeException(nameof(serverPort), $"Port cannot be {serverPort}");
 
 
-            ServerIPAddress = serverIpAddress;
+            ServerIPAddress = serverIPAddress;
             ServerPort = serverPort;
         }
 
