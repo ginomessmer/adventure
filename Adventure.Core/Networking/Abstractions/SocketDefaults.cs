@@ -31,5 +31,10 @@
         /// The default handshake content.
         /// </summary>
         public const string HandshakeMessageContent = "HELLO_WORLD";
+
+        /// <summary>
+        /// The default timeout.
+        /// </summary>
+        public const int ReceiveTimeout = -1;
     }
 }

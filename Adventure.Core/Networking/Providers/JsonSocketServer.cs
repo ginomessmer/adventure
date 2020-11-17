@@ -20,6 +20,6 @@ namespace Adventure.Core.Networking.Providers
             throw new NotImplementedException();
         }
 
-        public override event EventHandler<MessageReceivedArgs> OnMessageReceived;
+        public override event EventHandler<SocketMessageReceivedArgs> OnMessageReceived;
     }
 }

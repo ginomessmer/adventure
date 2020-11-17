@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Adventure.Core.Networking.Abstractions
 {
@@ -10,6 +11,6 @@ namespace Adventure.Core.Networking.Abstractions
 
         void SendMessage(string message);
 
-        event EventHandler<MessageReceivedArgs> OnMessageReceived;
+        event EventHandler<SocketMessageReceivedArgs> OnMessageReceived;
     }
 }

@@ -1,16 +1,17 @@
 ﻿using Adventure.Core.Networking.Abstractions;
 using Adventure.Core.Networking.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
+using System.Threading;
 
 namespace Adventure.Core.Networking.Providers
 {
     public sealed class SimpleSocketServer : SocketServer
     {
         private Socket _socket;
-        private byte[] _buffer;
-        private string _data;
+
+        private readonly IList<SocketConnection> _connections = new List<SocketConnection>();
 
         public override void Start()
         {
@@ -22,46 +23,17 @@ namespace Adventure.Core.Networking.Providers
             _socket.Bind(builder.Endpoint);
             _socket.Listen(int.MaxValue);
 
-            _buffer = new byte[SocketDefaults.MessageSize];
-            _data = string.Empty;
-
             while (true)
             {
                 var receiveSocket = _socket.Accept();
+                receiveSocket.ReceiveTimeout = SocketDefaults.ReceiveTimeout;
 
-                while (receiveSocket.Connected)
-                {
-                    try
-                    {
-                        receiveSocket.Receive(_buffer);
-                    }
-                    catch (SocketException ex)
-                    {
-                        Console.WriteLine("Socket exception: {0}", ex);
-                        break;
-                    }
+                var connection = new SocketConnection(receiveSocket, this);
 
-                    _data += Encoding.ASCII.GetString(_buffer);
+                if (OnMessageReceived is not null)
+                    connection.OnMessageReceived += (sender, args) => OnMessageReceived(sender, new SocketMessageReceivedArgs(args.Message, connection));
 
-                    // Get header length value
-                    var headerIndex = _data.IndexOf(SocketDefaults.LengthHeaderName, StringComparison.Ordinal);
-                    if (headerIndex > -1)
-                    {
-                        var header = _data.Substring(headerIndex, SocketDefaults.HeaderSize);
-
-                        // Split or regex
-                        var headerKeyValue = header.Split(':');
-
-                        var length = Convert.ToInt32(headerKeyValue[1]);
-                        var message = _data.Substring(headerIndex + SocketDefaults.HeaderSize, length);
-
-                        OnMessageReceived?.Invoke(this, new MessageReceivedArgs(message));
-
-                        receiveSocket.Send(Encoding.ASCII.GetBytes("Great success"));
-                    }
-                }
-
-                _data = string.Empty;
+                _connections.Add(connection);
             }
         }
 
@@ -77,6 +49,6 @@ namespace Adventure.Core.Networking.Providers
             throw new NotImplementedException();
         }
 
-        public override event EventHandler<MessageReceivedArgs> OnMessageReceived;
+        public override event EventHandler<SocketMessageReceivedArgs> OnMessageReceived;
     }
 }

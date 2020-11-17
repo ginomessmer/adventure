@@ -17,7 +17,7 @@ namespace Adventure.Server
                 var server = new SimpleSocketServer();
                 server.OnMessageReceived += (sender, receivedArgs) =>
                 {
-                    Console.WriteLine("Message received: {0}", receivedArgs.Message);
+                    Console.WriteLine("Message received from client {0}: {1}", receivedArgs.Connection.Id, receivedArgs.Message);
                 };
 
                 server.Start();

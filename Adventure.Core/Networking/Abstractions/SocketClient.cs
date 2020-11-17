@@ -10,7 +10,7 @@ namespace Adventure.Core.Networking.Abstractions
 
         public abstract void SendInitialMessage();
 
-        public abstract event EventHandler<MessageReceivedArgs> OnMessageReceived;
+        public abstract event EventHandler<SocketMessageReceivedArgs> OnMessageReceived;
 
         public abstract void Shutdown();
 
