@@ -1,5 +1,6 @@
 ﻿using Adventure.Core.Networking.Abstractions;
 using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -11,10 +12,14 @@ namespace Adventure.Core.Networking
     /// </summary>
     public class SocketConnection : IDisposable
     {
+        #region Properties
+
         /// <summary>
         /// The connection's ID.
         /// </summary>
         public string Id { get; init; }
+
+        #region Client Properties
 
         /// <summary>
         /// The network socket that the client is connected to.
@@ -22,9 +27,20 @@ namespace Adventure.Core.Networking
         public Socket ClientSocket { get; init; }
 
         /// <summary>
+        /// Gets the remote client's endpoint.
+        /// </summary>
+        public EndPoint ClientEndpoint => ClientSocket.RemoteEndPoint;
+
+        #endregion
+
+        #endregion
+
+        /// <summary>
         /// The server that hosts this connection.
         /// </summary>
         public SocketServer Server { get; init; }
+
+        #region Fields
 
         /// <summary>
         /// The dedicated thread where the connection receives messages.
@@ -35,11 +51,15 @@ namespace Adventure.Core.Networking
         /// The receive buffer.
         /// </summary>
         private readonly byte[] _buffer = new byte[SocketDefaults.MessageSize];
-        
+
         /// <summary>
         /// The data this connection has received so far.
         /// </summary>
         private string _data = string.Empty;
+
+        #endregion
+
+        #region Event Handlers
 
         /// <summary>
         /// Fires when a new message is received on this connection.
@@ -50,6 +70,8 @@ namespace Adventure.Core.Networking
         /// Fires when the client disconnects from the connection.
         /// </summary>
         public event EventHandler<SocketConnectionClientDisconnectedArgs> OnDisconnected;
+
+        #endregion
 
         /// <summary>
         /// <inheritdoc cref="SocketConnection(Socket, SocketServer, string)"/>
