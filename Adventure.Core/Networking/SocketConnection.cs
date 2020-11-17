@@ -6,27 +6,61 @@ using System.Threading;
 
 namespace Adventure.Core.Networking
 {
+    /// <summary>
+    /// A single connection that handles incoming messages.
+    /// </summary>
     public class SocketConnection : IDisposable
     {
+        /// <summary>
+        /// The connection's ID.
+        /// </summary>
         public string Id { get; init; }
 
+        /// <summary>
+        /// The network socket that the client is connected to.
+        /// </summary>
         public Socket ClientSocket { get; init; }
 
+        /// <summary>
+        /// The server that hosts this connection.
+        /// </summary>
         public SocketServer Server { get; init; }
 
+        /// <summary>
+        /// The dedicated thread where the connection receives messages.
+        /// </summary>
         private Thread _thread;
 
+        /// <summary>
+        /// The receive buffer.
+        /// </summary>
         private readonly byte[] _buffer = new byte[SocketDefaults.MessageSize];
+        
+        /// <summary>
+        /// The data this connection has received so far.
+        /// </summary>
         private string _data = string.Empty;
 
-
+        /// <summary>
+        /// Fires when a new message is received on this connection.
+        /// </summary>
         public event EventHandler<ServerConnectionMessageReceivedArgs> OnMessageReceived;
+
+        /// <summary>
+        /// Fires when the client disconnects from the connection.
+        /// </summary>
         public event EventHandler<SocketConnectionClientDisconnectedArgs> OnDisconnected;
 
         public SocketConnection(Socket clientSocket, SocketServer server) : this(clientSocket, server, Guid.NewGuid().ToString())
         {
         }
 
+        /// <summary>
+        /// Creates a new connection and listens to messages on a dedicated thread.
+        /// </summary>
+        /// <param name="clientSocket"></param>
+        /// <param name="server"></param>
+        /// <param name="id"></param>
         public SocketConnection(Socket clientSocket, SocketServer server, string id)
         {
             ClientSocket = clientSocket;
@@ -37,6 +71,9 @@ namespace Adventure.Core.Networking
             _thread.Start();
         }
 
+        /// <summary>
+        /// Handles the connection by listening to the receive socket, puts the received data into the buffer and data string.
+        /// </summary>
         private void HandleConnection()
         {
             try

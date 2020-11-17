@@ -5,6 +5,9 @@ using System.Net.Sockets;
 
 namespace Adventure.Core.Networking.Helpers
 {
+    /// <summary>
+    /// A builder class that builds a Socket.
+    /// </summary>
     public class SocketBuilder
     {
         public IPAddress IpAddress { get; private set; }
@@ -23,6 +26,11 @@ namespace Adventure.Core.Networking.Helpers
             Port = port;
         }
 
+        /// <summary>
+        /// Appends the IP address based on a host name.
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
         public SocketBuilder WithHostEntry(string host)
         {
             var entry = Dns.GetHostEntry(host);
@@ -34,18 +42,32 @@ namespace Adventure.Core.Networking.Helpers
             return WithIpAddress(address);
         }
 
+        /// <summary>
+        /// Appends an IP address.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
         public SocketBuilder WithIpAddress(IPAddress address)
         {
             IpAddress = address;
             return this;
         }
 
+        /// <summary>
+        /// Appends the dedicated port.
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public SocketBuilder WithPort(int port)
         {
             Port = port;
             return this;
         }
 
+        /// <summary>
+        /// Builds and returns a new Socket object passed on the information passed before.
+        /// </summary>
+        /// <returns>A brand new socket</returns>
         public Socket Build()
         {
             Endpoint = new IPEndPoint(IpAddress, Port);

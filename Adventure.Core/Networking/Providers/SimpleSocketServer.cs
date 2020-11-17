@@ -6,12 +6,18 @@ using System.Net.Sockets;
 
 namespace Adventure.Core.Networking.Providers
 {
+    /// <summary>
+    /// What the name implies... a simple socket server.
+    /// </summary>
     public sealed class SimpleSocketServer : SocketServer
     {
         private Socket _socket;
 
-        private readonly IList<SocketConnection> _connections = new List<SocketConnection>();
+        private readonly ICollection<SocketConnection> _connections = new List<SocketConnection>();
 
+        /// <summary>
+        /// Starts the server and accepts new incoming requests. All new requests are added to a managed connections collection.
+        /// </summary>
         public override void Start()
         {
             var builder = new SocketBuilder()
@@ -39,12 +45,18 @@ namespace Adventure.Core.Networking.Providers
             }
         }
 
+        /// <summary>
+        /// A clean up method that removes a connection after it's gone.
+        /// </summary>
         private void HandleOnDisconnected(object? sender, SocketConnectionClientDisconnectedArgs e)
         {
             _connections.Remove(e.Connection);
             OnClientDisconnected?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// Stops the server.
+        /// </summary>
         public override void Shutdown()
         {
             _socket.Shutdown(SocketShutdown.Both);
