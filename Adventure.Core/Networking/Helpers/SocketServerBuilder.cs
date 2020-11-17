@@ -23,11 +23,33 @@ namespace Adventure.Core.Networking.Helpers
             var handlers = new ServerEventHandlers();
             configure.Invoke(handlers);
 
-            _server.OnServerStarting += (sender, args) => handlers.Starting?.Invoke();
-            _server.OnServerStarted += (sender, args) => handlers.Started?.Invoke();
-            _server.OnMessageReceived += (sender, args) => handlers.MessageReceived?.Invoke(args);
-            _server.OnClientDisconnected += (sender, args) => handlers.ClientDisconnected?.Invoke(args);
+            return WithStartingHandler(handlers.Starting)
+                .WithStartedHandler(handlers.Started)
+                .WithMessageReceivedHandler(handlers.MessageReceived)
+                .WithClientDisconnectedHandler(handlers.ClientDisconnected);
+        }
 
+        public SocketServerBuilder<T> WithStartingHandler(Action handler)
+        {
+            _server.OnServerStarting += (sender, args) => handler?.Invoke();
+            return this;
+        }
+
+        public SocketServerBuilder<T> WithStartedHandler(Action handler)
+        {
+            _server.OnServerStarted += (sender, args) => handler?.Invoke();
+            return this;
+        }
+
+        public SocketServerBuilder<T> WithMessageReceivedHandler(Action<SocketConnectionMessageReceivedArgs> handler)
+        {
+            _server.OnMessageReceived += (sender, args) => handler?.Invoke(args);
+            return this;
+        }
+
+        public SocketServerBuilder<T> WithClientDisconnectedHandler(Action<SocketConnectionClientDisconnectedArgs> handler)
+        {
+            _server.OnClientDisconnected += (sender, args) => handler?.Invoke(args);
             return this;
         }
 
