@@ -20,6 +20,11 @@ namespace Adventure.Server
                     Console.WriteLine("Message received from client {0}: {1}", receivedArgs.Connection.Id, receivedArgs.Message);
                 };
 
+                server.OnClientDisconnected += (sender, disconnectedArgs) =>
+                {
+                    Console.WriteLine("Client {0} disconnected from server", disconnectedArgs.Connection.Id);
+                };
+
                 server.Start();
             });
 

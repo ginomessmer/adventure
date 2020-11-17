@@ -9,7 +9,7 @@ using Adventure.Core.Networking.Abstractions;
 
 namespace Adventure.Core.Networking
 {
-    public class SocketConnection
+    public class SocketConnection : IDisposable
     {
         public string Id { get; init; }
 
@@ -23,7 +23,8 @@ namespace Adventure.Core.Networking
         private string _data = string.Empty;
 
 
-        public event EventHandler<ServerConnectionMessageReceivedArgs> OnMessageReceived; 
+        public event EventHandler<ServerConnectionMessageReceivedArgs> OnMessageReceived;
+        public event EventHandler<SocketConnectionClientDisconnectedArgs> OnDisconnected;
 
         public SocketConnection(Socket clientSocket, SocketServer server) : this(clientSocket, server, Guid.NewGuid().ToString())
         {
@@ -67,12 +68,24 @@ namespace Adventure.Core.Networking
             }
             catch (SocketException ex)
             {
-                // TODO: Handle disconnected client
+                switch (ex.SocketErrorCode)
+                {
+                    case SocketError.ConnectionReset:
+                        OnDisconnected?.Invoke(this, new SocketConnectionClientDisconnectedArgs(this));
+                        break;
+                    default:
+                        throw;
+                }
             }
             finally
             {
                 _data = string.Empty;
             }
+        }
+
+        public void Dispose()
+        {
+            ClientSocket?.Dispose();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Adventure.Core.Networking.Providers
             throw new NotImplementedException();
         }
 
-        public override event EventHandler<SocketMessageReceivedArgs> OnMessageReceived;
+        public override event EventHandler<SocketConnectionMessageReceivedArgs> OnMessageReceived;
         public override void SendInitialMessage()
         {
             throw new NotImplementedException();

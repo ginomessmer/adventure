@@ -31,10 +31,19 @@ namespace Adventure.Core.Networking.Providers
                 var connection = new SocketConnection(receiveSocket, this);
 
                 if (OnMessageReceived is not null)
-                    connection.OnMessageReceived += (sender, args) => OnMessageReceived(sender, new SocketMessageReceivedArgs(args.Message, connection));
+                    connection.OnMessageReceived += (sender, args) => OnMessageReceived(sender, new SocketConnectionMessageReceivedArgs(args.Message, connection));
+
+                if (OnClientDisconnected is not null)
+                    connection.OnDisconnected += HandleOnDisconnected;
 
                 _connections.Add(connection);
             }
+        }
+
+        private void HandleOnDisconnected(object? sender, SocketConnectionClientDisconnectedArgs e)
+        {
+            _connections.Remove(e.Connection);
+            OnClientDisconnected?.Invoke(this, e);
         }
 
         public override void Shutdown()
@@ -49,6 +58,7 @@ namespace Adventure.Core.Networking.Providers
             throw new NotImplementedException();
         }
 
-        public override event EventHandler<SocketMessageReceivedArgs> OnMessageReceived;
+        public override event EventHandler<SocketConnectionMessageReceivedArgs> OnMessageReceived;
+        public event EventHandler<SocketConnectionClientDisconnectedArgs> OnClientDisconnected;
     }
 }

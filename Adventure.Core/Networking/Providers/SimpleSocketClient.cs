@@ -52,7 +52,7 @@ namespace Adventure.Core.Networking.Providers
 
         public override void SendInitialMessage() => SendMessage(SocketDefaults.HandshakeMessageContent);
 
-        public override event EventHandler<SocketMessageReceivedArgs> OnMessageReceived;
+        public override event EventHandler<SocketConnectionMessageReceivedArgs> OnMessageReceived;
 
         public override void Shutdown()
         {
