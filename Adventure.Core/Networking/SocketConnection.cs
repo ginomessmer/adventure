@@ -19,6 +19,11 @@ namespace Adventure.Core.Networking
         /// </summary>
         public string Id { get; init; }
 
+        /// <summary>
+        /// The server that hosts this connection.
+        /// </summary>
+        public SocketServer Server { get; init; }
+
         #region Client Properties
 
         /// <summary>
@@ -35,10 +40,6 @@ namespace Adventure.Core.Networking
 
         #endregion
 
-        /// <summary>
-        /// The server that hosts this connection.
-        /// </summary>
-        public SocketServer Server { get; init; }
 
         #region Fields
 
@@ -59,6 +60,7 @@ namespace Adventure.Core.Networking
 
         #endregion
 
+
         #region Event Handlers
 
         /// <summary>
@@ -72,6 +74,7 @@ namespace Adventure.Core.Networking
         public event EventHandler<SocketConnectionClientDisconnectedArgs> OnDisconnected;
 
         #endregion
+
 
         /// <summary>
         /// <inheritdoc cref="SocketConnection(Socket, SocketServer, string)"/>

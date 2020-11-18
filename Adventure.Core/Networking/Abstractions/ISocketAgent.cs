@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 
 namespace Adventure.Core.Networking.Abstractions
 {
@@ -7,8 +8,6 @@ namespace Adventure.Core.Networking.Abstractions
         void Start();
 
         void Shutdown();
-
-        void SendMessage(string message);
 
         event EventHandler<SocketConnectionMessageReceivedArgs> OnMessageReceived;
     }

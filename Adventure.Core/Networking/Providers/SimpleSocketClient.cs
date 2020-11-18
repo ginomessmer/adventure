@@ -89,6 +89,7 @@ namespace Adventure.Core.Networking.Providers
         /// <summary>
         /// Sends a message to the designated server.
         /// </summary>
+        /// <param name="client"></param>
         /// <param name="message"></param>
         public override void SendMessage(string message)
         {
