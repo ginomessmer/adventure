@@ -1,5 +1,6 @@
 ﻿using System;
 using Adventure.Core.Networking.Abstractions;
+using Adventure.Core.Networking.Abstractions.Events;
 
 namespace Adventure.Core.Networking.Helpers
 {

@@ -4,6 +4,7 @@ using Adventure.Core.Commands.Abstractions;
 using Adventure.Core.Networking.Abstractions;
 using Newtonsoft.Json;
 using System.Net.Sockets;
+using Adventure.Core.Networking.Abstractions.Events;
 
 namespace Adventure.Core.Networking.Providers
 {
