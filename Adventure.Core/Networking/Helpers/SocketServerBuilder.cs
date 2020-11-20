@@ -11,7 +11,7 @@ namespace Adventure.Core.Networking.Helpers
 
             public Action Started { get; set; }
 
-            public Action<SocketConnectionMessageReceivedArgs> MessageReceived { get; set; }
+            public Action<SocketConnectionClientMessageReceivedArgs> MessageReceived { get; set; }
 
             public Action<SocketConnectionClientDisconnectedArgs> ClientDisconnected { get; set; }
         }
@@ -41,7 +41,7 @@ namespace Adventure.Core.Networking.Helpers
             return this;
         }
 
-        public SocketServerBuilder<T> WithMessageReceivedHandler(Action<SocketConnectionMessageReceivedArgs> handler)
+        public SocketServerBuilder<T> WithMessageReceivedHandler(Action<SocketConnectionClientMessageReceivedArgs> handler)
         {
             _server.OnMessageReceived += (sender, args) => handler?.Invoke(args);
             return this;

@@ -1,23 +1,33 @@
-﻿using Adventure.Core.Networking.Providers;
+﻿using Adventure.Core.Networking.Helpers;
+using Adventure.Core.Networking.Providers;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using Adventure.Core.Networking.Helpers;
 
 namespace Adventure.Server
 {
     public class Program
     {
-        public static Task Main(string[] args) => new SocketServerBuilder<SimpleSocketServer>()
+        /// <summary>
+        /// A very simple implementation for a socket server built for testing purposes.
+        /// </summary>
+        public static readonly SimpleSocketServer SimpleSocketServer = new SocketServerBuilder<SimpleSocketServer>()
             .WithHandlers(handlers =>
             {
                 handlers.Starting = () => Console.WriteLine("Server is starting...");
-                handlers.Started = () => Console.WriteLine("Server started"); 
+                handlers.Started = () => Console.WriteLine("Server started");
                 handlers.MessageReceived = args => Console.WriteLine("Message received from client {0} ({1}): {2}",
                     args.Connection.Id, args.Connection.ClientEndpoint, args.Message);
-                handlers.ClientDisconnected = args => Console.WriteLine("Client {0} disconnected from server", args.Connection.Id);
+                handlers.ClientDisconnected = args =>
+                    Console.WriteLine("Client {0} disconnected from server", args.Connection.Id);
             })
-            .Build()
-            .RunAsync();
+            .Build();
+
+        /// <summary>
+        /// Use this.
+        /// </summary>
+        public static readonly JsonSocketServer JsonSocketServer = new SocketServerBuilder<JsonSocketServer>()
+            .Build();
+
+        public static Task Main(string[] args) => JsonSocketServer.RunAsync();
     }
 }

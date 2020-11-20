@@ -4,9 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Adventure.Core.Networking.Abstractions;
 using Adventure.Core.Networking.Helpers;
 
-namespace Adventure.Core.Networking.Abstractions
+namespace Adventure.Core.Networking
 {
     public abstract class SocketClient : ISocketAgent, IDisposable
     {
@@ -25,7 +26,7 @@ namespace Adventure.Core.Networking.Abstractions
         /// <summary>
         /// The remote server's endpoint.
         /// </summary>
-        public EndPoint ServerEndPoint { get; }
+        public EndPoint ServerEndPoint => ServerSocket.RemoteEndPoint;
 
         #endregion
 
@@ -35,7 +36,7 @@ namespace Adventure.Core.Networking.Abstractions
         /// <summary>
         /// The internal network socket.
         /// </summary>
-        private Socket _socket;
+        protected Socket ServerSocket;
 
         #endregion
 
@@ -44,7 +45,7 @@ namespace Adventure.Core.Networking.Abstractions
 
         public event EventHandler OnConnected;
 
-        public event EventHandler<SocketConnectionMessageReceivedArgs> OnMessageReceived;
+        public event EventHandler<SocketConnectionServerMessageReceivedArgs> OnMessageReceived;
 
         #endregion
 
@@ -87,10 +88,31 @@ namespace Adventure.Core.Networking.Abstractions
                 .WithEndpoint(ServerIPAddress)
                 .WithPort(ServerPort);
 
-            _socket = builder.Build();
-            _socket.Connect(builder.Endpoint);
+            ServerSocket = builder.Build();
+            ServerSocket.Connect(builder.Endpoint);
+
+            SendInitialMessage();
 
             OnConnected?.Invoke(this, EventArgs.Empty);
+
+            while (true)
+            {
+                var messageLengthBuffer = new byte[4];
+                
+                var receivedBytes = ServerSocket.Receive(messageLengthBuffer);
+                var messageLength = BitConverter.ToInt32(messageLengthBuffer);
+
+                if (receivedBytes is not 4)
+                {
+                    return;
+                }
+
+                var messageBuffer = new byte[messageLength];
+                receivedBytes = ServerSocket.Receive(messageBuffer);
+                var data = Encoding.ASCII.GetString(messageBuffer, 0, messageLength);
+
+                OnMessageReceived?.Invoke(this, new SocketConnectionServerMessageReceivedArgs(data));
+            }
         }
 
         /// <summary>
@@ -117,7 +139,7 @@ namespace Adventure.Core.Networking.Abstractions
             payload.AddRange(headerBuffer);
             payload.AddRange(messageBuffer);
 
-            _socket.Send(payload.ToArray());
+            ServerSocket.Send(payload.ToArray());
         }
 
         public virtual void SendInitialMessage() => SendMessage(SocketDefaults.HandshakeMessageContent);
@@ -127,9 +149,9 @@ namespace Adventure.Core.Networking.Abstractions
         /// </summary>
         public virtual void Shutdown()
         {
-            _socket.Shutdown(SocketShutdown.Both);
-            _socket.Close();
-            _socket.Dispose();
+            ServerSocket.Shutdown(SocketShutdown.Both);
+            ServerSocket.Close();
+            ServerSocket.Dispose();
         }
 
         public void Dispose() => Shutdown();

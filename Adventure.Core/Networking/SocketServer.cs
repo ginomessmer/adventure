@@ -1,12 +1,13 @@
-﻿using Adventure.Core.Networking.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
-using System.Threading;
+using System.Text;
 using System.Threading.Tasks;
+using Adventure.Core.Networking.Abstractions;
+using Adventure.Core.Networking.Helpers;
 
-namespace Adventure.Core.Networking.Abstractions
+namespace Adventure.Core.Networking
 {
     public abstract class SocketServer : IAsyncSocketAgent
     {
@@ -29,7 +30,7 @@ namespace Adventure.Core.Networking.Abstractions
 
         public event EventHandler OnServerStarting;
         public event EventHandler OnServerStarted;
-        public event EventHandler<SocketConnectionMessageReceivedArgs> OnMessageReceived;
+        public event EventHandler<SocketConnectionClientMessageReceivedArgs> OnMessageReceived;
         public event EventHandler<SocketConnectionClientDisconnectedArgs> OnClientDisconnected;
 
         #endregion
@@ -66,7 +67,7 @@ namespace Adventure.Core.Networking.Abstractions
                 var connection = new SocketConnection(receiveSocket, this);
 
                 if (OnMessageReceived is not null)
-                    connection.OnMessageReceived += (sender, args) => OnMessageReceived(sender, new SocketConnectionMessageReceivedArgs(args.Message, connection));
+                    connection.OnMessageReceived += (sender, args) => OnMessageReceived(sender, new SocketConnectionClientMessageReceivedArgs(args.Message, connection));
 
                 if (OnClientDisconnected is not null)
                     connection.OnDisconnected += HandleOnDisconnected;
@@ -84,9 +85,17 @@ namespace Adventure.Core.Networking.Abstractions
             OnClientDisconnected?.Invoke(this, e);
         }
 
-        public virtual void SendMessage(Socket client, string message)
+        public virtual void SendMessage(string message, SocketConnection connection) =>
+            SendMessage(message, connection.ClientSocket);
+
+        public virtual void SendMessage(string message, Socket socket)
         {
-            throw new NotImplementedException();
+            //var responseBuffer = new byte[SocketDefaults.MessageSize];
+            var nessage = Encoding.ASCII.GetBytes(message);
+            var messageLength = BitConverter.GetBytes(message.Length);
+
+            socket.Send(messageLength);
+            socket.Send(nessage);
         }
 
         /// <summary>

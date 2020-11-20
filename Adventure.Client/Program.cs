@@ -1,14 +1,21 @@
 ﻿using Adventure.Core.Networking.Abstractions;
 using Adventure.Core.Networking.Providers;
 using System;
-using System.Text;
-using System.Threading.Tasks;
+using Adventure.Core.Networking;
 
 namespace Adventure.Client
 {
     public class Program
     {
         public static void Main(string[] args)
+        {
+            var client = new JsonSocketClient();
+            client.Start();
+
+            Console.ReadLine();
+        }
+
+        private static void StartSimpleClient()
         {
             Console.WriteLine("Connecting to server...");
             SocketClient client = new SimpleSocketClient();

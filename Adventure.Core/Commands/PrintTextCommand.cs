@@ -1,18 +1,25 @@
 ﻿using Adventure.Core.Commands.Abstractions;
 using System;
+using System.Net.Sockets;
 
 namespace Adventure.Core.Commands
 {
     public class PrintTextCommand : ICommand
     {
-        public void ExecuteClient(ICommandSender sender)
+        public string Message { get; }
+
+        public PrintTextCommand(string message)
         {
-            throw new NotImplementedException();
+            Message = message;
         }
 
-        public void ExecuteServer(ICommandSender sender)
+        public void ExecuteClient(ICommandSender sender, Socket serverSocket)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(Message);
+        }
+
+        public void ExecuteServer(ICommandSender sender, Socket clientSocket)
+        {
         }
     }
 }
