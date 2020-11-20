@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
+using Adventure.Server.Options;
 
 namespace Adventure.Server
 {
@@ -31,8 +32,10 @@ namespace Adventure.Server
         #endregion
 
         public static Task Main(string[] args) => Host.CreateDefaultBuilder(args)
-            .ConfigureServices(services =>
+            .ConfigureServices((context, services) =>
             {
+                services.Configure<AdventureServerOptions>(context.Configuration.GetSection("Server"));
+
                 services.AddSingleton<AdventureGameSocketServer>();
                 services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 
