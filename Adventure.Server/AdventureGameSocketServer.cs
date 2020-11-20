@@ -1,18 +1,18 @@
-﻿using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using Adventure.Core.Commands;
+﻿using Adventure.Core.Commands;
 using Adventure.Core.Commands.Abstractions;
 using Adventure.Core.Domain;
-using Adventure.Core.Game.Resources;
 using Adventure.Core.Infrastructure;
 using Adventure.Core.Networking;
 using Adventure.Core.Networking.Abstractions;
+using Adventure.Core.Resources;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Linq;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Adventure.Core.Game
+namespace Adventure.Server
 {
     /// <summary>
     /// A game server based on JSON.

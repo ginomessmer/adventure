@@ -1,8 +1,6 @@
-﻿using System.Threading;
+﻿using Microsoft.Extensions.Hosting;
+using System.Threading;
 using System.Threading.Tasks;
-using Adventure.Core.Game;
-using Adventure.Core.Networking.Providers;
-using Microsoft.Extensions.Hosting;
 
 namespace Adventure.Server
 {

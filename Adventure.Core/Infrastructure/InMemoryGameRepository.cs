@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Adventure.Core.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Adventure.Core.Domain;
 
 namespace Adventure.Core.Infrastructure
 {

@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Adventure.Core.Domain;
+﻿using Adventure.Core.Domain;
+using System.Threading.Tasks;
 
 namespace Adventure.Core.Infrastructure
 {

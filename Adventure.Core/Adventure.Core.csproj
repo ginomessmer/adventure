@@ -10,26 +10,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Game\Resources\MenuResources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
+    <Compile Update="Resources\MenuResources.Designer.cs">
       <DependentUpon>MenuResources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Game\Resources\SceneResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\SceneResources.Designer.cs">
       <DependentUpon>SceneResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Game\Resources\MenuResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+    <EmbeddedResource Update="Resources\MenuResources.resx">
       <LastGenOutput>MenuResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Game\Resources\SceneResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\SceneResources.resx">
       <LastGenOutput>SceneResources.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 

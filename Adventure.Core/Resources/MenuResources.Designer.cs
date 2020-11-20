@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Adventure.Core.Game.Resources {
+namespace Adventure.Core.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Adventure.Core.Game.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class SceneResources {
+    public class MenuResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SceneResources() {
+        internal MenuResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Adventure.Core.Game.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Adventure.Core.Game.Resources.SceneResources", typeof(SceneResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Adventure.Core.Resources.MenuResources", typeof(MenuResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,23 +61,20 @@ namespace Adventure.Core.Game.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Du stehst in einem dichten Wald. Die Sonne verbirgt sich über großem Geäst. 
-        ///In der Nähe zwitschern einige Vögel eine dir seltsam bekannte Melodie.
-        ///Der Weg zu deiner Rechten führt weiter an ein unscheinbares Haus, aus dessen kleinem Kamin dichter Rauch quillt.
-        ///Zu deiner Linken befindet sich ein tiefer Abgrund, bei dessen Anblick dir ein kalter Schauer über den Rücken läuft..
+        ///   Looks up a localized string similar to Mögliche Aktionen: .
         /// </summary>
-        public static string ForestDescription {
+        public static string AvailableActions {
             get {
-                return ResourceManager.GetString("ForestDescription", resourceCulture);
+                return ResourceManager.GetString("AvailableActions", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to forest.
+        ///   Looks up a localized string similar to Was tust du?.
         /// </summary>
-        public static string ForestId {
+        public static string CallToAction {
             get {
-                return ResourceManager.GetString("ForestId", resourceCulture);
+                return ResourceManager.GetString("CallToAction", resourceCulture);
             }
         }
     }

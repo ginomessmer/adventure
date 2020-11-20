@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adventure.Core.Networking.Abstractions
+﻿namespace Adventure.Core.Networking.Abstractions
 {
     public interface ISocketAgent
     {

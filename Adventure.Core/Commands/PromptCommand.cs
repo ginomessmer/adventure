@@ -1,7 +1,7 @@
 ﻿using Adventure.Core.Commands.Abstractions;
+using Newtonsoft.Json;
 using System;
 using System.Net.Sockets;
-using Newtonsoft.Json;
 
 namespace Adventure.Core.Commands
 {

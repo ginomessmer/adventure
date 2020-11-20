@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Adventure.Core.Game.Resources {
+namespace Adventure.Core.Resources {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace Adventure.Core.Game.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class MenuResources {
+    public class SceneResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MenuResources() {
+        internal SceneResources() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Adventure.Core.Game.Resources.MenuResources", typeof(MenuResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Adventure.Core.Resources.SceneResources", typeof(SceneResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Adventure.Core.Game.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,20 +61,23 @@ namespace Adventure.Core.Game.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mögliche Aktionen: .
+        ///   Looks up a localized string similar to Du stehst in einem dichten Wald. Die Sonne verbirgt sich über großem Geäst. 
+        ///In der Nähe zwitschern einige Vögel eine dir seltsam bekannte Melodie.
+        ///Der Weg zu deiner Rechten führt weiter an ein unscheinbares Haus, aus dessen kleinem Kamin dichter Rauch quillt.
+        ///Zu deiner Linken befindet sich ein tiefer Abgrund, bei dessen Anblick dir ein kalter Schauer über den Rücken läuft..
         /// </summary>
-        internal static string AvailableActions {
+        public static string ForestDescription {
             get {
-                return ResourceManager.GetString("AvailableActions", resourceCulture);
+                return ResourceManager.GetString("ForestDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Was tust du?.
+        ///   Looks up a localized string similar to forest.
         /// </summary>
-        internal static string CallToAction {
+        public static string ForestId {
             get {
-                return ResourceManager.GetString("CallToAction", resourceCulture);
+                return ResourceManager.GetString("ForestId", resourceCulture);
             }
         }
     }

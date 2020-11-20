@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Adventure.Core.Resources;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Adventure.Core.Game.Resources;
 
 namespace Adventure.Core.Domain
 {
