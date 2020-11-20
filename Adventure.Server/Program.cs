@@ -10,6 +10,8 @@ namespace Adventure.Server
 {
     public class Program
     {
+        #region Testing
+
         /// <summary>
         /// A very simple implementation for a socket server built for testing purposes.
         /// </summary>
@@ -25,6 +27,8 @@ namespace Adventure.Server
                     Console.WriteLine("Client {0} disconnected from server", args.ClientConnection.Id);
             })
             .Build();
+
+        #endregion
 
         public static Task Main(string[] args) => Host.CreateDefaultBuilder(args)
             .ConfigureServices(services =>

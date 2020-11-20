@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Adventure.Core.Domain;
 
 namespace Adventure.Core.Infrastructure
@@ -9,16 +10,16 @@ namespace Adventure.Core.Infrastructure
     {
         private readonly List<Game> _games = new();
 
-        public Game AddGame(Game game)
+        public Task<Game> AddGameAsync(Game game)
         {
             if (_games.Exists(x => x.Id == game.Id))
                 throw new Exception("Game already exists");
 
             _games.Add(game);
 
-            return game;
+            return Task.FromResult(game);
         }
 
-        public Game GetGame(string id) => _games.SingleOrDefault(x => x.Id == id);
+        public Task<Game> GetGameAsync(string id) => Task.FromResult(_games.SingleOrDefault(x => x.Id == id));
     }
 }

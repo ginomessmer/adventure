@@ -4,6 +4,7 @@ using Adventure.Core.Commands.Abstractions;
 using Adventure.Core.Networking.Abstractions;
 using Newtonsoft.Json;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Adventure.Core.Commands;
 using Adventure.Core.Domain;
 using Adventure.Core.Infrastructure;
@@ -21,19 +22,19 @@ namespace Adventure.Core.Networking.Providers
             _gameRepository = gameRepository;
             _logger = logger;
 
-            OnMessageReceived += HandleServerCommandMessage;
-            ClientConnected += (sender, args) => _logger.LogInformation(
-                "Client {ClientId} {ClientEndpoint} connected to server",
+            OnMessageReceived += async (_, args) => await HandleServerCommandMessageAsync(args.Message, args.ClientConnection);
+
+            ClientConnected += (_, args) => _logger.LogInformation("Client {ClientId} {ClientEndpoint} connected to server",
                 args.ClientConnection.Id, args.ClientConnection.ClientEndpoint);
         }
 
-        private void HandleServerCommandMessage(object? sender, SocketConnectionClientMessageReceivedArgs e)
+        private async Task HandleServerCommandMessageAsync(string message, SocketClientConnection connection)
         {
-            var command = JsonConvert.DeserializeObject<ICommand>(e.Message, JsonSocketDefaults.JsonSerializerSettings);
+            var command = JsonConvert.DeserializeObject<ICommand>(message, JsonSocketDefaults.JsonSerializerSettings);
 
-            var game = _gameRepository.GetGame(e.ClientConnection.Id) ?? _gameRepository.AddGame(new Game
+            var game = await _gameRepository.GetGameAsync(connection.Id) ?? await _gameRepository.AddGameAsync(new Game
             {
-                Id = e.ClientConnection.Id
+                Id = connection.Id
             });
 
             game.SceneChanged += GameOnSceneChanged;
