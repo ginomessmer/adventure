@@ -31,25 +31,25 @@ namespace Adventure.Core.Networking.Helpers
 
         public SocketServerBuilder<T> WithStartingHandler(Action handler)
         {
-            _server.OnServerStarting += (sender, args) => handler?.Invoke();
+            _server.ServerStarting += (sender, args) => handler?.Invoke();
             return this;
         }
 
         public SocketServerBuilder<T> WithStartedHandler(Action handler)
         {
-            _server.OnServerStarted += (sender, args) => handler?.Invoke();
+            _server.ServerStarted += (sender, args) => handler?.Invoke();
             return this;
         }
 
         public SocketServerBuilder<T> WithMessageReceivedHandler(Action<SocketConnectionClientMessageReceivedArgs> handler)
         {
-            _server.OnMessageReceived += (sender, args) => handler?.Invoke(args);
+            _server.MessageReceived += (sender, args) => handler?.Invoke(args);
             return this;
         }
 
         public SocketServerBuilder<T> WithClientDisconnectedHandler(Action<SocketConnectionClientDisconnectedArgs> handler)
         {
-            _server.OnClientDisconnected += (sender, args) => handler?.Invoke(args);
+            _server.ClientDisconnected += (sender, args) => handler?.Invoke(args);
             return this;
         }
 

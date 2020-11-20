@@ -22,7 +22,7 @@ namespace Adventure.Core.Networking.Providers
             _gameRepository = gameRepository;
             _logger = logger;
 
-            OnMessageReceived += async (_, args) => await HandleServerCommandMessageAsync(args.Message, args.ClientConnection);
+            MessageReceived += async (_, args) => await HandleServerCommandMessageAsync(args.Message, args.ClientConnection);
 
             ClientConnected += (_, args) => _logger.LogInformation("Client {ClientId} {ClientEndpoint} connected to server",
                 args.ClientConnection.Id, args.ClientConnection.ClientEndpoint);

@@ -28,11 +28,11 @@ namespace Adventure.Core.Networking
 
         #region Events
 
-        public event EventHandler OnServerStarting;
-        public event EventHandler OnServerStarted;
+        public event EventHandler ServerStarting;
+        public event EventHandler ServerStarted;
         public event EventHandler<SocketConnectionClientConnectedArgs> ClientConnected;
-        public event EventHandler<SocketConnectionClientMessageReceivedArgs> OnMessageReceived;
-        public event EventHandler<SocketConnectionClientDisconnectedArgs> OnClientDisconnected;
+        public event EventHandler<SocketConnectionClientMessageReceivedArgs> MessageReceived;
+        public event EventHandler<SocketConnectionClientDisconnectedArgs> ClientDisconnected;
 
         #endregion
 
@@ -48,7 +48,7 @@ namespace Adventure.Core.Networking
         /// </summary>
         public virtual void Start()
         {
-            OnServerStarting?.Invoke(this, EventArgs.Empty);
+            ServerStarting?.Invoke(this, EventArgs.Empty);
 
             var builder = new SocketBuilder()
                 .WithHostEntry(SocketDefaults.LoopbackAddress)
@@ -58,7 +58,7 @@ namespace Adventure.Core.Networking
             _socket.Bind(builder.Endpoint);
             _socket.Listen(int.MaxValue);
 
-            OnServerStarted?.Invoke(this, EventArgs.Empty);
+            ServerStarted?.Invoke(this, EventArgs.Empty);
 
             while (true)
             {
@@ -68,10 +68,10 @@ namespace Adventure.Core.Networking
                 var connection = new SocketClientConnection(receiveSocket, this);
                 ClientConnected?.Invoke(this, new SocketConnectionClientConnectedArgs(connection));
 
-                if (OnMessageReceived is not null)
-                    connection.OnMessageReceived += (sender, args) => OnMessageReceived(sender, new SocketConnectionClientMessageReceivedArgs(args.Message, connection));
+                if (MessageReceived is not null)
+                    connection.OnMessageReceived += (sender, args) => MessageReceived(sender, new SocketConnectionClientMessageReceivedArgs(args.Message, connection));
 
-                if (OnClientDisconnected is not null)
+                if (ClientDisconnected is not null)
                     connection.OnDisconnected += HandleOnDisconnected;
 
                 _connections.Add(connection);
@@ -84,7 +84,7 @@ namespace Adventure.Core.Networking
         private void HandleOnDisconnected(object? sender, SocketConnectionClientDisconnectedArgs e)
         {
             _connections.Remove(e.ClientConnection);
-            OnClientDisconnected?.Invoke(this, e);
+            ClientDisconnected?.Invoke(this, e);
         }
 
         public virtual void SendMessage(string message, SocketClientConnection clientConnection) =>
