@@ -1,8 +1,6 @@
-﻿using Adventure.Core.Networking.Abstractions;
+﻿using Adventure.Core.Networking;
 using Adventure.Core.Networking.Providers;
 using System;
-using Adventure.Core.Game;
-using Adventure.Core.Networking;
 
 namespace Adventure.Client
 {
