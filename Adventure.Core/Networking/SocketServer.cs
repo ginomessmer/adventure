@@ -14,6 +14,9 @@ namespace Adventure.Core.Networking
     {
         #region Properties
 
+        public int Port { get; init; } = SocketDefaults.Port;
+
+
         private readonly ICollection<SocketClientConnection> _connections = new List<SocketClientConnection>();
         public IReadOnlyCollection<SocketClientConnection> Connections => _connections.ToList();
 
@@ -53,7 +56,7 @@ namespace Adventure.Core.Networking
 
             var builder = new SocketBuilder()
                 .WithHostEntry(SocketDefaults.LoopbackAddress)
-                .WithPort(SocketDefaults.Port);
+                .WithPort(Port);
 
             _socket = builder.Build();
             _socket.Bind(builder.Endpoint);

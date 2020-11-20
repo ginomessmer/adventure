@@ -11,6 +11,8 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Adventure.Server.Options;
+using Microsoft.Extensions.Options;
 
 namespace Adventure.Server
 {
@@ -20,15 +22,21 @@ namespace Adventure.Server
     public sealed class AdventureGameSocketServer : SocketServer, ICommandSender
     {
         private readonly IGameRepository _gameRepository;
+        private readonly AdventureServerOptions _options;
         private readonly ILogger<AdventureGameSocketServer> _logger;
 
-        public AdventureGameSocketServer(IGameRepository gameRepository, ILogger<AdventureGameSocketServer> logger)
+        public AdventureGameSocketServer(IGameRepository gameRepository, IOptions<AdventureServerOptions> options,
+            ILogger<AdventureGameSocketServer> logger)
         {
             _gameRepository = gameRepository;
+            _options = options.Value;
             _logger = logger;
 
-            MessageReceived += async (_, args) => await HandleServerCommandMessageAsync(args.Message, args.ClientConnection);
+            // Configure socket server
+            Port = _options.Port;
 
+            // Listen to events
+            MessageReceived += async (_, args) => await HandleServerCommandMessageAsync(args.Message, args.ClientConnection);
             ClientConnected += (_, args) => _logger.LogInformation("Client {ClientId} {ClientEndpoint} connected to server",
                 args.ClientConnection.Id, args.ClientConnection.ClientEndpoint);
         }
