@@ -2,6 +2,7 @@
 using Adventure.Core.Networking.Providers;
 using System;
 using System.Threading.Tasks;
+using Adventure.Core.Game;
 using Adventure.Core.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,7 +34,7 @@ namespace Adventure.Server
         public static Task Main(string[] args) => Host.CreateDefaultBuilder(args)
             .ConfigureServices(services =>
             {
-                services.AddSingleton<JsonSocketServer>();
+                services.AddSingleton<AdventureGameSocketServer>();
                 services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 
                 services.AddHostedService<AdventureGameHostedService>();

@@ -1,23 +1,27 @@
-﻿using System;
-using System.Linq;
-using Adventure.Core.Commands.Abstractions;
-using Adventure.Core.Networking.Abstractions;
-using Newtonsoft.Json;
+﻿using System.Linq;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
 using Adventure.Core.Commands;
+using Adventure.Core.Commands.Abstractions;
 using Adventure.Core.Domain;
 using Adventure.Core.Infrastructure;
+using Adventure.Core.Networking;
+using Adventure.Core.Networking.Abstractions;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
-namespace Adventure.Core.Networking.Providers
+namespace Adventure.Core.Game
 {
-    public sealed class JsonSocketServer : SocketServer, ICommandSender
+    /// <summary>
+    /// A game server based on JSON.
+    /// </summary>
+    public sealed class AdventureGameSocketServer : SocketServer, ICommandSender
     {
         private readonly IGameRepository _gameRepository;
-        private readonly ILogger<JsonSocketServer> _logger;
+        private readonly ILogger<AdventureGameSocketServer> _logger;
 
-        public JsonSocketServer(IGameRepository gameRepository, ILogger<JsonSocketServer> logger)
+        public AdventureGameSocketServer(IGameRepository gameRepository, ILogger<AdventureGameSocketServer> logger)
         {
             _gameRepository = gameRepository;
             _logger = logger;
@@ -32,7 +36,7 @@ namespace Adventure.Core.Networking.Providers
         {
             var command = JsonConvert.DeserializeObject<ICommand>(message, JsonSocketDefaults.JsonSerializerSettings);
 
-            var game = await _gameRepository.GetGameAsync(connection.Id) ?? await _gameRepository.AddGameAsync(new Game
+            var game = await _gameRepository.GetGameAsync(connection.Id) ?? await _gameRepository.AddGameAsync(new GameSession
             {
                 Id = connection.Id
             });
@@ -49,10 +53,18 @@ namespace Adventure.Core.Networking.Providers
             }
         }
 
-        private void GameOnSceneChanged(Game game, Scene scene)
+        private void GameOnSceneChanged(GameSession gameSession, Scene scene)
         {
-            _logger.LogInformation("[{GameId}] - SceneChanged: {SceneId}", game.Id, scene.Id);
-            SendCommand(new PrintTextCommand(scene.Description), GetClientConnection(game).ClientSocket);
+            _logger.LogInformation("[{GameId}] SceneChanged: {SceneId}", gameSession.Id, scene.Id);
+
+            var text = new StringBuilder()
+                .AppendLine(scene.Description)
+                .AppendLine("Was tust du?")
+                .AppendLine("Mögliche Aktionen: ")
+                .AppendJoin(',', scene.Actions.Select(x => x.Verb));
+
+            SendCommand(new PrintTextCommand(text.ToString()), GetClientConnection(gameSession).ClientSocket);
+            SendCommand(new PromptCommand(), GetClientConnection(gameSession).ClientSocket);
         }
 
         public void SendCommand(ICommand command, Socket receiver)
@@ -61,7 +73,7 @@ namespace Adventure.Core.Networking.Providers
             SendMessage(json, receiver);
         }
 
-        public SocketClientConnection GetClientConnection(Game game) =>
-            Connections.SingleOrDefault(x => x.Id == game.Id);
+        public SocketClientConnection GetClientConnection(GameSession gameSession) =>
+            Connections.SingleOrDefault(x => x.Id == gameSession.Id);
     }
 }

@@ -1,16 +1,16 @@
-﻿using System;
+﻿using System.Net.Sockets;
 using Adventure.Core.Commands;
 using Adventure.Core.Commands.Abstractions;
+using Adventure.Core.Networking;
 using Adventure.Core.Networking.Abstractions;
-using Newtonsoft.Json;
-using System.Net.Sockets;
 using Adventure.Core.Networking.Abstractions.Events;
+using Newtonsoft.Json;
 
-namespace Adventure.Core.Networking.Providers
+namespace Adventure.Core.Game
 {
-    public sealed class JsonSocketClient : SocketClient, ICommandSender
+    public sealed class AdventureGameSocketClient : SocketClient, ICommandSender
     {
-        public JsonSocketClient()
+        public AdventureGameSocketClient()
         {
             OnMessageReceived += HandleClientCommandMessage;
         }

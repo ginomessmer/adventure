@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Adventure.Core.Game.Resources;
 
 namespace Adventure.Core.Domain
 {
-    public class Game
+    public class GameSession
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
         public Player Player { get; }
 
@@ -17,25 +18,29 @@ namespace Adventure.Core.Domain
         private List<Scene> _scenes;
 
 
-        public delegate void GameEventHandler<T>(Game game, T arg);
+        public delegate void GameEventHandler<T>(GameSession gameSession, T arg);
 
         public event GameEventHandler<Scene> SceneChanged; 
 
 
-        public Game()
+        public GameSession()
         {
             Player = new Player();
 
-            // Scenes
+            // Default scenes
             _scenes = new List<Scene>
             {
-                new(SceneDefaults.Forest, "test")
+                // Forest
+                new(SceneResources.ForestId, SceneResources.ForestDescription, new []
+                {
+                    new Action("gehe", "links", "rechts")
+                })
             };
         }
 
         public void Start()
         {
-            EnterScene(SceneDefaults.Forest);
+            EnterScene(SceneResources.ForestId);
         }
 
         private Scene EnterScene(string id)

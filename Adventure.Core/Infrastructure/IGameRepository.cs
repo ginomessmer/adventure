@@ -8,14 +8,14 @@ namespace Adventure.Core.Infrastructure
         /// <summary>
         /// Adds a new game to the repository.
         /// </summary>
-        /// <param name="game"></param>
-        Task<Game> AddGameAsync(Game game);
+        /// <param name="gameSession"></param>
+        Task<GameSession> AddGameAsync(GameSession gameSession);
 
         /// <summary>
         /// Returns the game by its ID. Returns null if not found.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<Game> GetGameAsync(string id);
+        Task<GameSession> GetGameAsync(string id);
     }
 }

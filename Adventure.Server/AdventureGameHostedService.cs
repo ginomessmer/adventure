@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Adventure.Core.Game;
 using Adventure.Core.Networking.Providers;
 using Microsoft.Extensions.Hosting;
 
@@ -7,9 +8,9 @@ namespace Adventure.Server
 {
     public class AdventureGameHostedService : IHostedService
     {
-        private readonly JsonSocketServer _server;
+        private readonly AdventureGameSocketServer _server;
 
-        public AdventureGameHostedService(JsonSocketServer server)
+        public AdventureGameHostedService(AdventureGameSocketServer server)
         {
             _server = server;
         }

@@ -1,6 +1,7 @@
 ﻿using Adventure.Core.Networking.Abstractions;
 using Adventure.Core.Networking.Providers;
 using System;
+using Adventure.Core.Game;
 using Adventure.Core.Networking;
 
 namespace Adventure.Client
@@ -9,7 +10,7 @@ namespace Adventure.Client
     {
         public static void Main(string[] args)
         {
-            var client = new JsonSocketClient();
+            var client = new AdventureGameSocketClient();
             client.Start();
 
             Console.ReadLine();
