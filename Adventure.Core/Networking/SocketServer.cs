@@ -30,6 +30,7 @@ namespace Adventure.Core.Networking
 
         public event EventHandler OnServerStarting;
         public event EventHandler OnServerStarted;
+        public event EventHandler<SocketConnectionClientConnectedArgs> ClientConnected;
         public event EventHandler<SocketConnectionClientMessageReceivedArgs> OnMessageReceived;
         public event EventHandler<SocketConnectionClientDisconnectedArgs> OnClientDisconnected;
 
@@ -65,6 +66,7 @@ namespace Adventure.Core.Networking
                 receiveSocket.ReceiveTimeout = SocketDefaults.ReceiveTimeout;
 
                 var connection = new SocketClientConnection(receiveSocket, this);
+                ClientConnected?.Invoke(this, new SocketConnectionClientConnectedArgs(connection));
 
                 if (OnMessageReceived is not null)
                     connection.OnMessageReceived += (sender, args) => OnMessageReceived(sender, new SocketConnectionClientMessageReceivedArgs(args.Message, connection));

@@ -2,6 +2,9 @@
 using Adventure.Core.Networking.Providers;
 using System;
 using System.Threading.Tasks;
+using Adventure.Core.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Adventure.Server
 {
@@ -10,6 +13,7 @@ namespace Adventure.Server
         /// <summary>
         /// A very simple implementation for a socket server built for testing purposes.
         /// </summary>
+        [Obsolete("Only for testing purposes")]
         public static readonly SimpleSocketServer SimpleSocketServer = new SocketServerBuilder<SimpleSocketServer>()
             .WithHandlers(handlers =>
             {
@@ -22,12 +26,15 @@ namespace Adventure.Server
             })
             .Build();
 
-        /// <summary>
-        /// Use this.
-        /// </summary>
-        public static readonly JsonSocketServer JsonSocketServer = new SocketServerBuilder<JsonSocketServer>()
-            .Build();
+        public static Task Main(string[] args) => Host.CreateDefaultBuilder(args)
+            .ConfigureServices(services =>
+            {
+                services.AddSingleton<JsonSocketServer>();
+                services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 
-        public static Task Main(string[] args) => JsonSocketServer.RunAsync();
+                services.AddHostedService<AdventureGameHostedService>();
+            })
+            .Build()
+            .RunAsync();
     }
 }
