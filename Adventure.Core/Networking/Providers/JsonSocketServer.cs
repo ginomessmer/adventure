@@ -15,7 +15,7 @@ namespace Adventure.Core.Networking.Providers
         private void HandleServerCommandMessage(object? sender, SocketConnectionClientMessageReceivedArgs e)
         {
             var command = JsonConvert.DeserializeObject<ICommand>(e.Message, JsonSocketDefaults.JsonSerializerSettings);
-            command?.ExecuteServer(this, e.Connection.ClientSocket);
+            command?.ExecuteServer(this, e.ClientConnection.ClientSocket);
         }
 
         public void SendCommand(ICommand command, Socket receiver)

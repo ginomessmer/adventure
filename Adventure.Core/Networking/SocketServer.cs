@@ -13,8 +13,8 @@ namespace Adventure.Core.Networking
     {
         #region Properties
 
-        private readonly ICollection<SocketConnection> _connections = new List<SocketConnection>();
-        public IReadOnlyCollection<SocketConnection> Connections => _connections.ToList();
+        private readonly ICollection<SocketClientConnection> _connections = new List<SocketClientConnection>();
+        public IReadOnlyCollection<SocketClientConnection> Connections => _connections.ToList();
 
         #endregion
 
@@ -64,7 +64,7 @@ namespace Adventure.Core.Networking
                 var receiveSocket = _socket.Accept();
                 receiveSocket.ReceiveTimeout = SocketDefaults.ReceiveTimeout;
 
-                var connection = new SocketConnection(receiveSocket, this);
+                var connection = new SocketClientConnection(receiveSocket, this);
 
                 if (OnMessageReceived is not null)
                     connection.OnMessageReceived += (sender, args) => OnMessageReceived(sender, new SocketConnectionClientMessageReceivedArgs(args.Message, connection));
@@ -81,12 +81,12 @@ namespace Adventure.Core.Networking
         /// </summary>
         private void HandleOnDisconnected(object? sender, SocketConnectionClientDisconnectedArgs e)
         {
-            _connections.Remove(e.Connection);
+            _connections.Remove(e.ClientConnection);
             OnClientDisconnected?.Invoke(this, e);
         }
 
-        public virtual void SendMessage(string message, SocketConnection connection) =>
-            SendMessage(message, connection.ClientSocket);
+        public virtual void SendMessage(string message, SocketClientConnection clientConnection) =>
+            SendMessage(message, clientConnection.ClientSocket);
 
         public virtual void SendMessage(string message, Socket socket)
         {

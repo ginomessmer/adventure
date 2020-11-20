@@ -10,7 +10,7 @@ namespace Adventure.Core.Networking
     /// <summary>
     /// A single connection that handles incoming messages.
     /// </summary>
-    public class SocketConnection : IDisposable
+    public class SocketClientConnection : IDisposable
     {
         #region Properties
 
@@ -77,11 +77,11 @@ namespace Adventure.Core.Networking
 
 
         /// <summary>
-        /// <inheritdoc cref="SocketConnection(Socket, SocketServer, string)"/>
+        /// <inheritdoc cref="SocketClientConnection(System.Net.Sockets.Socket,Adventure.Core.Networking.SocketServer,string)"/>
         /// </summary>
         /// <param name="clientSocket"></param>
         /// <param name="server"></param>
-        public SocketConnection(Socket clientSocket, SocketServer server) : this(clientSocket, server, Guid.NewGuid().ToString())
+        public SocketClientConnection(Socket clientSocket, SocketServer server) : this(clientSocket, server, Guid.NewGuid().ToString())
         {
         }
 
@@ -91,7 +91,7 @@ namespace Adventure.Core.Networking
         /// <param name="clientSocket"></param>
         /// <param name="server"></param>
         /// <param name="id"></param>
-        public SocketConnection(Socket clientSocket, SocketServer server, string id)
+        public SocketClientConnection(Socket clientSocket, SocketServer server, string id)
         {
             ClientSocket = clientSocket;
             Server = server;

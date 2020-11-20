@@ -16,9 +16,9 @@ namespace Adventure.Server
                 handlers.Starting = () => Console.WriteLine("Server is starting...");
                 handlers.Started = () => Console.WriteLine("Server started");
                 handlers.MessageReceived = args => Console.WriteLine("Message received from client {0} ({1}): {2}",
-                    args.Connection.Id, args.Connection.ClientEndpoint, args.Message);
+                    args.ClientConnection.Id, args.ClientConnection.ClientEndpoint, args.Message);
                 handlers.ClientDisconnected = args =>
-                    Console.WriteLine("Client {0} disconnected from server", args.Connection.Id);
+                    Console.WriteLine("Client {0} disconnected from server", args.ClientConnection.Id);
             })
             .Build();
 

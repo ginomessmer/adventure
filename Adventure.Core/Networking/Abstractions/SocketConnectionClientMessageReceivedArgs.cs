@@ -1,8 +1,8 @@
 ﻿namespace Adventure.Core.Networking.Abstractions
 {
-    public record SocketConnectionClientMessageReceivedArgs(string Message, SocketConnection Connection);
+    public record SocketConnectionClientMessageReceivedArgs(string Message, SocketClientConnection ClientConnection);
 
     public record SocketConnectionServerMessageReceivedArgs(string Message);
 
-    public record SocketConnectionClientDisconnectedArgs(SocketConnection Connection);
+    public record SocketConnectionClientDisconnectedArgs(SocketClientConnection ClientConnection);
 }
