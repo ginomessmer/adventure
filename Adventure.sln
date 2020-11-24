@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vanilla", "Vanilla", "{10AA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gRPC", "gRPC", "{D6F60DB1-1270-40E7-B5F9-F51CB08D2108}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.GrpcServer", "src\Adventure.GrpcServer\Adventure.GrpcServer.csproj", "{9A46EC40-7249-4798-810C-BDE1AC854BD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.GrpcServer", "Adventure.GrpcServer\Adventure.GrpcServer.csproj", "{9A46EC40-7249-4798-810C-BDE1AC854BD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
