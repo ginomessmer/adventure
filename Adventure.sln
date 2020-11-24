@@ -3,11 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.Client", "Adventure.Client\Adventure.Client.csproj", "{508481AC-1699-45B3-8B1B-3F7DE145EEB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adventure.Client", "Adventure.Client\Adventure.Client.csproj", "{508481AC-1699-45B3-8B1B-3F7DE145EEB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.Core", "Adventure.Core\Adventure.Core.csproj", "{1C6F78F2-ED8C-4B9C-8318-579AC88BE45B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adventure.Core", "Adventure.Core\Adventure.Core.csproj", "{1C6F78F2-ED8C-4B9C-8318-579AC88BE45B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.Server", "Adventure.Server\Adventure.Server.csproj", "{0883D869-A4A7-44BB-A271-46EA12550BDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adventure.Server", "Adventure.Server\Adventure.Server.csproj", "{0883D869-A4A7-44BB-A271-46EA12550BDF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vanilla", "Vanilla", "{10AA0287-42FD-44D9-A818-42D4B41A33F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gRPC", "gRPC", "{D6F60DB1-1270-40E7-B5F9-F51CB08D2108}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.GrpcServer", "src\Adventure.GrpcServer\Adventure.GrpcServer.csproj", "{9A46EC40-7249-4798-810C-BDE1AC854BD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +33,19 @@ Global
 		{0883D869-A4A7-44BB-A271-46EA12550BDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0883D869-A4A7-44BB-A271-46EA12550BDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0883D869-A4A7-44BB-A271-46EA12550BDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A46EC40-7249-4798-810C-BDE1AC854BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A46EC40-7249-4798-810C-BDE1AC854BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A46EC40-7249-4798-810C-BDE1AC854BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A46EC40-7249-4798-810C-BDE1AC854BD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{508481AC-1699-45B3-8B1B-3F7DE145EEB7} = {10AA0287-42FD-44D9-A818-42D4B41A33F1}
+		{1C6F78F2-ED8C-4B9C-8318-579AC88BE45B} = {10AA0287-42FD-44D9-A818-42D4B41A33F1}
+		{0883D869-A4A7-44BB-A271-46EA12550BDF} = {10AA0287-42FD-44D9-A818-42D4B41A33F1}
+		{9A46EC40-7249-4798-810C-BDE1AC854BD1} = {D6F60DB1-1270-40E7-B5F9-F51CB08D2108}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E79B5B6-F5D1-4F35-9096-4187484CD2B6}
